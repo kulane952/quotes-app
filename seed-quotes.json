@@ -1,0 +1,5 @@
+[
+  { "id": "seed-1", "text": "Simplicity is the soul of efficiency.", "tag": "design", "favorite": false },
+  { "id": "seed-2", "text": "Make it work, make it right, make it fast.", "tag": "engineering", "favorite": false },
+  { "id": "seed-3", "text": "Stay hungry, stay foolish inspiration", "tag": "inspiration", "favorite": false }
+]
