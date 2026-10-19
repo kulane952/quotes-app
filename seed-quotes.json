@@ -1,5 +1,5 @@
 [
-  { "id": "seed-1", "text": "Simplicity is the soul of efficiency.", "tag": "design", "favorite": false },
-  { "id": "seed-2", "text": "Make it work, make it right, make it fast.", "tag": "engineering", "favorite": false },
-  { "id": "seed-3", "text": "Stay hungry, stay foolish inspiration", "tag": "inspiration", "favorite": false }
+  { "id": "seed-1", "text": "Simplicity is the soul of efficiency.", "category": "design", "author": "", "favorite": false, "createdAt": "2025-01-01T00:00:00.000Z", "updatedAt": "2025-01-01T00:00:00.000Z" },
+  { "id": "seed-2", "text": "Make it work, make it right, make it fast.", "category": "engineering", "author": "", "favorite": false, "createdAt": "2025-01-01T00:00:00.000Z", "updatedAt": "2025-01-01T00:00:00.000Z" },
+  { "id": "seed-3", "text": "Stay hungry, stay foolish inspiration", "category": "inspiration", "author": "", "favorite": false, "createdAt": "2025-01-01T00:00:00.000Z", "updatedAt": "2025-01-01T00:00:00.000Z" }
 ]

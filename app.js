@@ -68,10 +68,11 @@
     if (typeof id !== "string" || !id.trim() || id.length > 200) throw new Error("A quote has an invalid ID.");
     if (typeof text !== "string" || !text.trim() || text.length > 10000) throw new Error("Each quote needs text of 1–10,000 characters.");
     if (typeof author !== "string" || author.length > 200) throw new Error("An author must be text of no more than 200 characters.");
-    if (typeof category !== "string" || category.length > 100) throw new Error("A category must be text of no more than 100 characters.");
+    // Backward compatibility: if category is missing, use empty string for migration
+    const validatedCategory = category && typeof category === "string" && category.length <= 100 ? category : "";
     if (typeof favorite !== "boolean") throw new Error("A quote has an invalid favorite value.");
     if (!validTimestamp(createdAt) || !validTimestamp(updatedAt)) throw new Error("A quote has an invalid timestamp.");
-    return { id, text, author, category: category || "", favorite, createdAt, updatedAt };
+    return { id, text, author, category: validatedCategory, favorite, createdAt, updatedAt };
   }
 
   function validateEnvelope(value) {
@@ -143,8 +144,15 @@
       return true;
     }
     try {
-      window.localStorage.setItem(DATA_KEY, JSON.stringify({ version: DATA_VERSION, quotes: nextQuotes }));
-      quotes = nextQuotes;
+      // Ensure all quotes have proper structure
+      const normalizedQuotes = nextQuotes.map(quote => {
+        if (!quote.category || typeof quote.category !== "string" || quote.category.length > 100) {
+          quote.category = quote.category || "";
+        }
+        return quote;
+      });
+      window.localStorage.setItem(DATA_KEY, JSON.stringify({ version: DATA_VERSION, quotes: normalizedQuotes }));
+      quotes = normalizedQuotes;
       render();
       return true;
     } catch {
@@ -406,8 +414,12 @@
         }
         continue;
       }
-      let imported = incoming;
-      if (usedIds.has(imported.id)) imported = { ...incoming, id: makeId() };
+      // Ensure imported quote has proper category
+      let imported = { ...incoming };
+      if (!imported.category || typeof imported.category !== "string" || imported.category.length > 100) {
+        imported.category = imported.category || "";
+      }
+      if (usedIds.has(imported.id)) imported = { ...imported, id: makeId() };
       usedIds.add(imported.id);
       merged.push(imported);
       byKey.set(key, imported);
